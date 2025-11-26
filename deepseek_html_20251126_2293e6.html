@@ -1,0 +1,1619 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrainzBR_Vendas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        :root {
+            --primary: #8A2BE2;
+            --primary-dark: #6A0DAD;
+            --secondary: #00FF88;
+            --dark: #0F0F0F;
+            --darker: #1A1A1A;
+            --light: #E0E0E0;
+            --white: #FFFFFF;
+            --success: #00CC66;
+            --danger: #FF4444;
+            --warning: #FFAA00;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --glass: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--dark), var(--darker));
+            color: var(--white);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Moderno */
+        header {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 15px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            font-size: 32px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-link {
+            color: var(--light);
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: var(--glass);
+            color: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.3);
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .user-welcome {
+            color: var(--secondary);
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(138, 43, 226, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(138, 43, 226, 0.6);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 150px 0 80px;
+            text-align: center;
+            background: radial-gradient(circle at top right, var(--primary-dark), transparent 50%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, var(--white), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: var(--light);
+            max-width: 700px;
+            margin: 0 auto 40px;
+            line-height: 1.8;
+        }
+
+        .discord-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(45deg, #5865F2, #4752C4);
+            color: var(--white);
+            padding: 15px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(88, 101, 242, 0.4);
+        }
+
+        .discord-link:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(88, 101, 242, 0.6);
+        }
+
+        /* Categorias */
+        .categories {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            font-size: 2.5rem;
+            color: var(--white);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+
+        .category-tabs {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .category-tab {
+            padding: 12px 25px;
+            background: var(--card-bg);
+            border: none;
+            border-radius: 25px;
+            color: var(--light);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+        }
+
+        .category-tab.active {
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.4);
+        }
+
+        .category-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .category-content.active {
+            display: block;
+        }
+
+        /* Produtos */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .product-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(138, 43, 226, 0.4);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: linear-gradient(45deg, var(--primary-dark), var(--dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--light);
+            font-size: 3rem;
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-name {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .product-details {
+            margin-bottom: 20px;
+        }
+
+        .product-detail {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            color: var(--light);
+        }
+
+        .product-price {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--secondary);
+            text-align: center;
+            margin: 20px 0;
+            text-shadow: 0 2px 10px rgba(0, 255, 136, 0.3);
+        }
+
+        .buy-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .buy-btn:hover {
+            background: linear-gradient(45deg, var(--primary-dark), var(--primary));
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.6);
+        }
+
+        /* Modal de Login */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: var(--darker);
+            padding: 40px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            position: relative;
+        }
+
+        .modal-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            border-radius: 20px 20px 0 0;
+        }
+
+        .modal-title {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.8rem;
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--light);
+            font-weight: 500;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 15px;
+            border-radius: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--white);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.3);
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 15px;
+        }
+
+        /* Chat */
+        .chat-modal {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 380px;
+            height: 550px;
+            background: var(--darker);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+            flex-direction: column;
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-title {
+            font-weight: bold;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .close-chat {
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-chat:hover {
+            transform: scale(1.2);
+        }
+
+        .chat-body {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 15px;
+            border-radius: 18px;
+            word-wrap: break-word;
+            animation: messageSlide 0.3s ease;
+        }
+
+        @keyframes messageSlide {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .bot-message {
+            background: linear-gradient(45deg, var(--primary-dark), var(--primary));
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+
+        .user-message {
+            background: linear-gradient(45deg, var(--secondary), #00CC66);
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+
+        .admin-message {
+            background: linear-gradient(45deg, #FF6B00, #FF4444);
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+
+        .chat-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .option-btn {
+            padding: 15px;
+            background: var(--card-bg);
+            border: none;
+            border-radius: 12px;
+            color: var(--white);
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .option-btn:hover {
+            background: rgba(138, 43, 226, 0.3);
+            transform: translateX(5px);
+        }
+
+        .chat-input-area {
+            display: flex;
+            padding: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            gap: 10px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--white);
+            font-size: 1rem;
+        }
+
+        .send-btn {
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            border: none;
+            border-radius: 12px;
+            color: var(--white);
+            padding: 0 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .send-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Botão de Chat Fixo */
+        .chat-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(138, 43, 226, 0.6);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .chat-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(138, 43, 226, 0.8);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--danger);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Admin Panel */
+        .admin-panel {
+            display: none;
+            padding: 100px 0 50px;
+            min-height: 100vh;
+        }
+
+        .admin-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .admin-card {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .admin-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(138, 43, 226, 0.4);
+        }
+
+        .admin-card h3 {
+            margin-bottom: 15px;
+            color: var(--secondary);
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .admin-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 15px;
+        }
+
+        .admin-list-item {
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .admin-list-item:hover {
+            background: rgba(138, 43, 226, 0.2);
+            transform: translateX(5px);
+        }
+
+        /* Tela de Verificação */
+        .verification-screen {
+            display: none;
+            padding: 150px 0 50px;
+            text-align: center;
+            min-height: 100vh;
+        }
+
+        .verification-form {
+            max-width: 400px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .chat-modal {
+                width: 95%;
+                height: 70%;
+                bottom: 10px;
+                right: 2.5%;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .admin-actions {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            z-index: 10000;
+            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.5);
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo" id="site-title">
+                    <i class="fas fa-brain"></i>
+                    BrainzBR_Vendas
+                </div>
+                <div class="nav-links">
+                    <a href="#" class="nav-link active" data-category="home">Início</a>
+                    <a href="#" class="nav-link" data-category="rules">Regras</a>
+                    <a href="#" class="nav-link" data-category="brainrots">Brainrots</a>
+                    <a href="#" class="nav-link" data-category="scripts">Scripts</a>
+                </div>
+                <div class="auth-buttons" id="auth-buttons">
+                    <button class="btn btn-outline" id="login-btn">
+                        <i class="fas fa-sign-in-alt"></i>Entrar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Botão de Chat Fixo -->
+    <div class="chat-button" id="chat-button">
+        <i class="fas fa-comments"></i>
+        <div class="notification-badge" id="chat-notification" style="display: none;">!</div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>🚀 BrainzBR_Vendas 🚀</h1>
+            <p>🔥 O MELHOR servidor de Discord para Brainrots, Scripts e muito mais! Qualidade premium, suporte 24/7 e comunidade ativa. Junte-se a nós e eleve sua experiência! 🔥</p>
+            <a href="https://discord.gg/dfq6Jwwtw3" class="discord-link" target="_blank">
+                <i class="fab fa-discord"></i>
+                Entrar no Servidor Discord
+            </a>
+        </div>
+    </section>
+
+    <!-- Categorias -->
+    <section class="categories">
+        <div class="container">
+            <h2 class="section-title">🎯 Nossos Produtos</h2>
+            
+            <div class="category-tabs">
+                <button class="category-tab active" data-target="rules">📜 Regras</button>
+                <button class="category-tab" data-target="brainrots">🧠 Brainrots</button>
+                <button class="category-tab" data-target="scripts">⚡ Scripts</button>
+            </div>
+            
+            <!-- Conteúdo das Categorias -->
+            <div class="category-content active" id="rules-content">
+                <div style="background: var(--card-bg); padding: 30px; border-radius: 20px; backdrop-filter: blur(10px);">
+                    <h3 style="color: var(--secondary); margin-bottom: 20px; font-size: 1.8rem;">📋 Regras do Servidor</h3>
+                    <div style="display: grid; gap: 15px;">
+                        <div style="display: flex; align-items: center; gap: 15px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 12px;">
+                            <i class="fas fa-handshake" style="color: var(--secondary); font-size: 1.2rem;"></i>
+                            <span>Respeite todos os membros do servidor</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 15px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 12px;">
+                            <i class="fas fa-ban" style="color: var(--danger); font-size: 1.2rem;"></i>
+                            <span>Proibido spam e flood nos canais</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 15px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 12px;">
+                            <i class="fas fa-shield-alt" style="color: var(--primary); font-size: 1.2rem;"></i>
+                            <span>Siga as instruções da equipe de moderação</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-content" id="brainrots-content">
+                <div class="products-grid">
+                    <!-- Produtos Brainrots -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <i class="fas fa-robot" style="color: var(--secondary);"></i>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">Los Chicleteiras</h3>
+                            <div class="product-details">
+                                <div class="product-detail">
+                                    <span><i class="fas fa-coins"></i> Rendimento por S/?:</span>
+                                    <span>7M</span>
+                                </div>
+                                <div class="product-detail">
+                                    <span><i class="fas fa-dna"></i> Mutação:</span>
+                                    <span>Normal</span>
+                                </div>
+                                <div class="product-detail">
+                                    <span><i class="fas fa-star"></i> Traits:</span>
+                                    <span>00</span>
+                                </div>
+                            </div>
+                            <div class="product-price">R$ 3,00</div>
+                            <button class="buy-btn" data-product="Los Chicleteiras" data-price="3.00">
+                                <i class="fas fa-shopping-cart"></i>Comprar Agora
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="product-card">
+                        <div class="product-image">
+                            <i class="fas fa-robot" style="color: var(--warning);"></i>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">Esok Sekolah</h3>
+                            <div class="product-details">
+                                <div class="product-detail">
+                                    <span><i class="fas fa-coins"></i> Rendimento por S/?:</span>
+                                    <span>90M</span>
+                                </div>
+                                <div class="product-detail">
+                                    <span><i class="fas fa-dna"></i> Mutação:</span>
+                                    <span>Normal</span>
+                                </div>
+                                <div class="product-detail">
+                                    <span><i class="fas fa-star"></i> Traits:</span>
+                                    <span>Taco</span>
+                                </div>
+                            </div>
+                            <div class="product-price">R$ 17,00</div>
+                            <button class="buy-btn" data-product="Esok Sekolah" data-price="17.00">
+                                <i class="fas fa-shopping-cart"></i>Comprar Agora
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="product-card">
+                        <div class="product-image">
+                            <i class="fas fa-robot" style="color: var(--primary);"></i>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">Espaguetti Tualetti</h3>
+                            <div class="product-details">
+                                <div class="product-detail">
+                                    <span><i class="fas fa-coins"></i> Rendimento por S/?:</span>
+                                    <span>75M</span>
+                                </div>
+                                <div class="product-detail">
+                                    <span><i class="fas fa-dna"></i> Mutação:</span>
+                                    <span>Gold</span>
+                                </div>
+                                <div class="product-detail">
+                                    <span><i class="fas fa-star"></i> Traits:</span>
+                                    <span>00</span>
+                                </div>
+                            </div>
+                            <div class="product-price">R$ 15,00</div>
+                            <button class="buy-btn" data-product="Espaguetti Tualetti" data-price="15.00">
+                                <i class="fas fa-shopping-cart"></i>Comprar Agora
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="product-card">
+                        <div class="product-image">
+                            <i class="fas fa-robot" style="color: var(--danger);"></i>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">Quesadilo Vampiro</h3>
+                            <div class="product-details">
+                                <div class="product-detail">
+                                    <span><i class="fas fa-coins"></i> Rendimento por S/?:</span>
+                                    <span>10M</span>
+                                </div>
+                                <div class="product-detail">
+                                    <span><i class="fas fa-dna"></i> Mutação:</span>
+                                    <span>Normal</span>
+                                </div>
+                                <div class="product-detail">
+                                    <span><i class="fas fa-star"></i> Traits:</span>
+                                    <span>Taco</span>
+                                </div>
+                            </div>
+                            <div class="product-price">R$ 4,00</div>
+                            <button class="buy-btn" data-product="Quesadilo Vampiro" data-price="4.00">
+                                <i class="fas fa-shopping-cart"></i>Comprar Agora
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-content" id="scripts-content">
+                <div class="products-grid">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <i class="fas fa-code" style="color: var(--secondary);"></i>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">Creator Logs</h3>
+                            <div class="product-details">
+                                <div class="product-detail">
+                                    <span><i class="fas fa-calendar-week"></i> 7 dias:</span>
+                                    <span>R$ 7,00</span>
+                                </div>
+                                <div class="product-detail">
+                                    <span><i class="fas fa-calendar-alt"></i> 2 semanas:</span>
+                                    <span>R$ 9,00</span>
+                                </div>
+                                <div class="product-detail">
+                                    <span><i class="fas fa-calendar-month"></i> 1 mês:</span>
+                                    <span>R$ 13,00</span>
+                                </div>
+                                <div class="product-detail">
+                                    <span><i class="fas fa-infinity"></i> Permanente:</span>
+                                    <span>R$ 24,50</span>
+                                </div>
+                            </div>
+                            <div class="product-price">Várias Opções</div>
+                            <button class="buy-btn" data-product="Creator Logs (7 dias)" data-price="7.00">
+                                <i class="fas fa-bolt"></i>7 Dias - R$ 7,00
+                            </button>
+                            <button class="buy-btn" style="margin-top: 10px; background: linear-gradient(45deg, var(--success), #00CC66);" data-product="Creator Logs (2 semanas)" data-price="9.00">
+                                <i class="fas fa-bolt"></i>2 Semanas - R$ 9,00
+                            </button>
+                            <button class="buy-btn" style="margin-top: 10px; background: linear-gradient(45deg, var(--warning), #FF8800);" data-product="Creator Logs (1 mês)" data-price="13.00">
+                                <i class="fas fa-bolt"></i>1 Mês - R$ 13,00
+                            </button>
+                            <button class="buy-btn" style="margin-top: 10px; background: linear-gradient(45deg, var(--primary), var(--primary-dark));" data-product="Creator Logs (Permanente)" data-price="24.50">
+                                <i class="fas fa-crown"></i>Permanente - R$ 24,50
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal de Login -->
+    <div class="modal" id="login-modal">
+        <div class="modal-content">
+            <h2 class="modal-title"><i class="fas fa-sign-in-alt"></i> Entrar na Conta</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label class="form-label" for="login-username">
+                        <i class="fas fa-user"></i> Nome de Usuário
+                    </label>
+                    <input type="text" id="login-username" class="form-input" placeholder="Digite seu username" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="login-password">
+                        <i class="fas fa-lock"></i> Senha
+                    </label>
+                    <input type="password" id="login-password" class="form-input" placeholder="Digite sua senha" required>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline" id="close-login">
+                        <i class="fas fa-times"></i>Fechar
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-sign-in-alt"></i>Entrar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Chat Modal -->
+    <div class="chat-modal" id="chat-modal">
+        <div class="chat-header">
+            <div class="chat-title">
+                <i class="fas fa-robot"></i>Brainz Vendas Bot ✅
+            </div>
+            <button class="close-chat" id="close-chat">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="chat-body" id="chat-body">
+            <!-- Mensagens serão adicionadas aqui via JavaScript -->
+        </div>
+        <div class="chat-input-area" id="chat-input-area" style="display: none;">
+            <input type="text" class="chat-input" id="chat-input" placeholder="Digite sua mensagem...">
+            <button class="send-btn" id="send-message">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Tela de Verificação -->
+    <div class="verification-screen" id="verification-screen">
+        <div class="container">
+            <div class="verification-form">
+                <h2><i class="fas fa-shield-alt"></i> Acesso Administrativo</h2>
+                <p>Digite a chave de acesso para continuar</p>
+                <div class="form-group">
+                    <input type="password" id="admin-key" class="form-input" placeholder="Chave de acesso">
+                </div>
+                <button class="btn btn-primary" id="verify-key">
+                    <i class="fas fa-check"></i> Verificar
+                </button>
+                <button class="btn btn-outline" id="back-to-home" style="margin-top: 10px;">
+                    <i class="fas fa-arrow-left"></i> Voltar ao Início
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Painel Administrativo -->
+    <section class="admin-panel" id="admin-panel">
+        <div class="container">
+            <h2 class="section-title">👑 Painel Administrativo</h2>
+            <div class="admin-actions">
+                <div class="admin-card">
+                    <h3><i class="fas fa-comments"></i> Chats Ativos</h3>
+                    <p>Gerencie conversas com clientes</p>
+                    <div class="admin-list" id="active-chats">
+                        <!-- Chats serão carregados aqui -->
+                    </div>
+                    <button class="btn btn-primary" style="margin-top: 15px; width: 100%;" onclick="loadActiveChats()">
+                        <i class="fas fa-sync"></i> Atualizar Chats
+                    </button>
+                </div>
+                
+                <div class="admin-card">
+                    <h3><i class="fas fa-cube"></i> Gerenciar Produtos</h3>
+                    <p>Adicione, edite ou remova produtos</p>
+                    <div class="admin-list" id="products-list">
+                        <div class="admin-list-item" onclick="editProduct('Los Chicleteiras')">
+                            <strong>Los Chicleteiras</strong><br>
+                            <small>R$ 3,00 | Estoque: 10</small>
+                        </div>
+                        <div class="admin-list-item" onclick="editProduct('Esok Sekolah')">
+                            <strong>Esok Sekolah</strong><br>
+                            <small>R$ 17,00 | Estoque: 5</small>
+                        </div>
+                        <div class="admin-list-item" onclick="editProduct('Espaguetti Tualetti')">
+                            <strong>Espaguetti Tualetti</strong><br>
+                            <small>R$ 15,00 | Estoque: 8</small>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" style="margin-top: 15px; width: 100%;" onclick="addNewProduct()">
+                        <i class="fas fa-plus"></i> Adicionar Produto
+                    </button>
+                </div>
+                
+                <div class="admin-card">
+                    <h3><i class="fas fa-boxes"></i> Configurar Estoque</h3>
+                    <p>Defina quantidades disponíveis</p>
+                    <div class="form-group">
+                        <label class="form-label">Produto:</label>
+                        <select class="form-input" id="stock-product">
+                            <option value="Los Chicleteiras">Los Chicleteiras</option>
+                            <option value="Esok Sekolah">Esok Sekolah</option>
+                            <option value="Espaguetti Tualetti">Espaguetti Tualetti</option>
+                            <option value="Quesadilo Vampiro">Quesadilo Vampiro</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Quantidade:</label>
+                        <input type="number" class="form-input" id="stock-quantity" value="10" min="0">
+                    </div>
+                    <button class="btn btn-primary" style="width: 100%;" onclick="updateStock()">
+                        <i class="fas fa-save"></i> Atualizar Estoque
+                    </button>
+                </div>
+                
+                <div class="admin-card">
+                    <h3><i class="fas fa-ban"></i> Bloquear Produtos</h3>
+                    <p>Defina produtos como indisponíveis</p>
+                    <div class="admin-list">
+                        <div class="admin-list-item">
+                            <input type="checkbox" id="block-product1" checked>
+                            <label for="block-product1">Los Chicleteiras</label>
+                        </div>
+                        <div class="admin-list-item">
+                            <input type="checkbox" id="block-product2" checked>
+                            <label for="block-product2">Esok Sekolah</label>
+                        </div>
+                        <div class="admin-list-item">
+                            <input type="checkbox" id="block-product3">
+                            <label for="block-product3">Espaguetti Tualetti</label>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" style="margin-top: 15px; width: 100%;" onclick="saveBlockedProducts()">
+                        <i class="fas fa-save"></i> Salvar Bloqueios
+                    </button>
+                </div>
+
+                <div class="admin-card">
+                    <h3><i class="fas fa-sign-out-alt"></i> Sair do Painel</h3>
+                    <p>Voltar para a loja principal</p>
+                    <button class="btn btn-outline" style="margin-top: 15px; width: 100%;" onclick="exitAdminPanel()">
+                        <i class="fas fa-home"></i> Voltar para Loja
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Sistema Completo
+        let currentUser = null;
+        let currentProduct = null;
+        let activeChats = [];
+        let currentActiveChat = null;
+        let unreadMessages = 0;
+        const webhookURL = "https://discord.com/api/webhooks/1435738177108447253/rJRSn31gVrpVV-L7gI6-phEer8eD5W8lX0QynJlFMRISuZbx5cI07h-xZR0p1mqzzMGY";
+        const adminKey = "Branzz9890";
+
+        // Usuários pré-cadastrados
+        const registeredUsers = {
+            "admin": "admin123",
+            "cliente": "cliente123",
+            "teste": "teste123"
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Verificar se já está logado
+            const savedUser = localStorage.getItem('brainzUser');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                updateAuthButtons();
+            }
+
+            // Configurar todas as funcionalidades
+            setupCategoryTabs();
+            setupAuthButtons();
+            setupBuyButtons();
+            setupForms();
+            setupChat();
+            setupTripleClick();
+            setupAdminPanel();
+            
+            // Carregar chats ativos
+            loadActiveChats();
+        });
+
+        function setupCategoryTabs() {
+            const tabs = document.querySelectorAll('.category-tab');
+            const contents = document.querySelectorAll('.category-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const target = this.getAttribute('data-target');
+                    
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    contents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.id === `${target}-content`) {
+                            content.classList.add('active');
+                        }
+                    });
+                });
+            });
+        }
+
+        function setupAuthButtons() {
+            document.getElementById('login-btn').addEventListener('click', function() {
+                document.getElementById('login-modal').style.display = 'flex';
+            });
+            
+            document.getElementById('close-login').addEventListener('click', function() {
+                document.getElementById('login-modal').style.display = 'none';
+            });
+        }
+
+        function setupBuyButtons() {
+            const buyButtons = document.querySelectorAll('.buy-btn');
+            
+            buyButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    if (!currentUser) {
+                        showNotification('🔐 Você precisa estar logado para comprar!');
+                        document.getElementById('login-modal').style.display = 'flex';
+                        return;
+                    }
+                    
+                    currentProduct = {
+                        name: this.getAttribute('data-product'),
+                        price: this.getAttribute('data-price')
+                    };
+                    
+                    openChat();
+                });
+            });
+        }
+
+        function setupForms() {
+            document.getElementById('login-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const username = document.getElementById('login-username').value;
+                const password = document.getElementById('login-password').value;
+                
+                if (registeredUsers[username] && registeredUsers[username] === password) {
+                    currentUser = {
+                        username: username,
+                        loginTime: new Date().toISOString()
+                    };
+                    
+                    // Salvar no localStorage
+                    localStorage.setItem('brainzUser', JSON.stringify(currentUser));
+                    
+                    document.getElementById('login-modal').style.display = 'none';
+                    updateAuthButtons();
+                    
+                    showNotification('✅ Login realizado com sucesso!');
+                } else {
+                    showNotification('❌ Usuário ou senha incorretos!');
+                }
+            });
+
+            // Configurar verificação de chave admin
+            document.getElementById('verify-key').addEventListener('click', function() {
+                const key = document.getElementById('admin-key').value;
+                
+                if (key === adminKey) {
+                    document.getElementById('verification-screen').style.display = 'none';
+                    document.getElementById('admin-panel').style.display = 'block';
+                    showNotification('👑 Acesso administrativo concedido!');
+                } else {
+                    fetch(webhookURL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            content: "⚠️ ALERTA: Tentativa de acesso administrativo com chave incorreta!"
+                        })
+                    });
+                    
+                    showNotification('❌ Chave incorreta!');
+                    document.getElementById('verification-screen').style.display = 'none';
+                }
+            });
+            
+            document.getElementById('back-to-home').addEventListener('click', function() {
+                document.getElementById('verification-screen').style.display = 'none';
+            });
+        }
+
+        function updateAuthButtons() {
+            const authButtons = document.getElementById('auth-buttons');
+            
+            if (currentUser) {
+                authButtons.innerHTML = `
+                    <span class="user-welcome">
+                        <i class="fas fa-user-check"></i> Olá, ${currentUser.username}
+                    </span>
+                    <button class="btn btn-outline" id="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i>Sair
+                    </button>
+                `;
+                
+                document.getElementById('logout-btn').addEventListener('click', function() {
+                    localStorage.removeItem('brainzUser');
+                    currentUser = null;
+                    updateAuthButtons();
+                    showNotification('👋 Logout realizado!');
+                });
+            } else {
+                authButtons.innerHTML = `
+                    <button class="btn btn-outline" id="login-btn">
+                        <i class="fas fa-sign-in-alt"></i>Entrar
+                    </button>
+                `;
+                setupAuthButtons();
+            }
+        }
+
+        function setupChat() {
+            document.getElementById('close-chat').addEventListener('click', function() {
+                document.getElementById('chat-modal').style.display = 'none';
+            });
+
+            document.getElementById('send-message').addEventListener('click', function() {
+                const message = document.getElementById('chat-input').value;
+                if (message.trim()) {
+                    if (message === '+unlock' && currentUser && currentUser.username === 'admin') {
+                        // Admin desbloqueando chat
+                        addMessage('Sistema', '🔓 Chat desbloqueado! Agora você pode conversar normalmente.', true);
+                        document.getElementById('chat-input-area').style.display = 'flex';
+                    } else {
+                        addMessage(currentUser.username, message, false);
+                        
+                        // Simular resposta do bot/dono
+                        setTimeout(() => {
+                            if (currentUser.username === 'admin') {
+                                addMessage('Sistema', '✅ Mensagem enviada como administrador.', true);
+                            } else {
+                                addMessage('Brainz Vendas Bot ✅', 'Aguarde enquanto o proprietário responde...', true);
+                                // Notificar admin sobre nova mensagem
+                                notifyNewMessage();
+                            }
+                        }, 1000);
+                    }
+                    document.getElementById('chat-input').value = '';
+                }
+            });
+
+            // Botão de chat fixo
+            document.getElementById('chat-button').addEventListener('click', function() {
+                if (!currentUser) {
+                    showNotification('🔐 Você precisa estar logado para usar o chat!');
+                    document.getElementById('login-modal').style.display = 'flex';
+                    return;
+                }
+                
+                if (currentActiveChat) {
+                    openAdminChat(currentActiveChat);
+                } else {
+                    openChat();
+                }
+            });
+        }
+
+        function openChat() {
+            const chatBody = document.getElementById('chat-body');
+            chatBody.innerHTML = '';
+            
+            // Adicionar esta conversa aos chats ativos
+            const chatId = Date.now().toString();
+            const newChat = {
+                id: chatId,
+                user: currentUser.username,
+                product: currentProduct ? currentProduct.name : 'Consulta',
+                messages: [],
+                timestamp: new Date().toISOString(),
+                unread: false
+            };
+            
+            activeChats.push(newChat);
+            currentActiveChat = newChat;
+            
+            addMessage('Brainz Vendas Bot ✅', `Olá <strong>${currentUser.username}</strong>, o que deseja?`, true);
+            
+            setTimeout(() => {
+                const optionsHTML = `
+                    <div class="chat-options">
+                        <button class="option-btn" id="chat-with-bot">
+                            <i class="fas fa-robot"></i>Conversar com Bot de Vendas
+                        </button>
+                        <button class="option-btn" id="chat-with-owner">
+                            <i class="fas fa-user-tie"></i>Conversar com Dono
+                        </button>
+                    </div>
+                `;
+                chatBody.innerHTML += optionsHTML;
+                
+                document.getElementById('chat-with-bot').addEventListener('click', function() {
+                    addMessage('Você', 'Conversar com Bot de Vendas', false);
+                    setTimeout(() => {
+                        addMessage('Brainz Vendas Bot ✅', '❌ O bot está offline no momento. Por favor, escolha "Conversar com Dono".', true);
+                    }, 1000);
+                });
+                
+                document.getElementById('chat-with-owner').addEventListener('click', function() {
+                    addMessage('Você', 'Conversar com Dono', false);
+                    notifyOwner();
+                });
+            }, 1000);
+            
+            document.getElementById('chat-modal').style.display = 'flex';
+            document.getElementById('chat-input-area').style.display = 'none';
+        }
+
+        function addMessage(sender, text, isBot) {
+            const chatBody = document.getElementById('chat-body');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isBot ? 'bot-message' : sender === 'admin' ? 'admin-message' : 'user-message'}`;
+            messageDiv.innerHTML = `<strong>${sender}:</strong> ${text}`;
+            chatBody.appendChild(messageDiv);
+            chatBody.scrollTop = chatBody.scrollHeight;
+            
+            // Adicionar mensagem ao chat ativo
+            if (currentActiveChat) {
+                currentActiveChat.messages.push({
+                    sender: sender,
+                    text: text,
+                    timestamp: new Date().toISOString()
+                });
+            }
+        }
+
+        function notifyOwner() {
+            const now = new Date();
+            const dateTime = now.toLocaleString('pt-BR');
+            
+            const embed = {
+                title: "🛒 Nova Compra @everyone @here! || By PROJECT BRANZZ ||",
+                description: "👋 Olá chefia um novo usuário quer falar com vc!!",
+                color: 0x8A2BE2,
+                fields: [
+                    {
+                        name: "👤 Nome de usuário do site:",
+                        value: currentUser.username,
+                        inline: true
+                    },
+                    {
+                        name: "🎒 Produto",
+                        value: currentProduct ? currentProduct.name : 'Consulta',
+                        inline: false
+                    },
+                    {
+                        name: "💰 Preço",
+                        value: currentProduct ? `R$ ${currentProduct.price}` : 'Consulta',
+                        inline: true
+                    },
+                    {
+                        name: "⌛ Data e hora:",
+                        value: dateTime,
+                        inline: false
+                    }
+                ],
+                footer: {
+                    text: "🚀 Veja agora o site!!"
+                }
+            };
+            
+            fetch(webhookURL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    content: "@everyone @here 🎯 NOVO USUÁRIO QUER COMPRAR! @everyone @here",
+                    embeds: [embed]
+                })
+            }).then(response => {
+                if (response.ok) {
+                    addMessage('Brainz Vendas Bot ✅', '✅ Sua solicitação foi enviada para o proprietário! Ele entrará em contato em breve via Discord.', true);
+                    addMessage('Brainz Vendas Bot ✅', '💡 Digite +unlock para desbloquear o chat e conversar diretamente.', true);
+                } else {
+                    addMessage('Brainz Vendas Bot ✅', '❌ Erro ao enviar solicitação. Tente novamente.', true);
+                }
+            }).catch(error => {
+                console.error('Erro:', error);
+                addMessage('Brainz Vendas Bot ✅', '❌ Erro de conexão. Tente novamente.', true);
+            });
+        }
+
+        function notifyNewMessage() {
+            unreadMessages++;
+            document.getElementById('chat-notification').style.display = 'flex';
+            document.getElementById('chat-notification').textContent = unreadMessages;
+            
+            // Vibração no celular (se suportado)
+            if (navigator.vibrate) {
+                navigator.vibrate(200);
+            }
+        }
+
+        function setupTripleClick() {
+            const siteTitle = document.getElementById('site-title');
+            let clickCount = 0;
+            let clickTimer;
+
+            siteTitle.addEventListener('click', function() {
+                clickCount++;
+                
+                if (clickCount === 1) {
+                    clickTimer = setTimeout(() => {
+                        clickCount = 0;
+                    }, 1000);
+                } else if (clickCount === 3) {
+                    clearTimeout(clickTimer);
+                    clickCount = 0;
+                    document.getElementById('verification-screen').style.display = 'block';
+                }
+            });
+        }
+
+        function setupAdminPanel() {
+            // Configurar botões do painel admin
+            document.getElementById('back-to-home').addEventListener('click', function() {
+                document.getElementById('verification-screen').style.display = 'none';
+            });
+        }
+
+        // Funções do Painel Administrativo
+        function loadActiveChats() {
+            const chatsList = document.getElementById('active-chats');
+            chatsList.innerHTML = '';
+            
+            if (activeChats.length === 0) {
+                chatsList.innerHTML = '<div class="admin-list-item">Nenhum chat ativo no momento</div>';
+                return;
+            }
+            
+            activeChats.forEach(chat => {
+                const chatItem = document.createElement('div');
+                chatItem.className = 'admin-list-item';
+                chatItem.innerHTML = `
+                    <strong>${chat.user}</strong><br>
+                    <small>Produto: ${chat.product}</small><br>
+                    <small>${new Date(chat.timestamp).toLocaleString()}</small>
+                    ${chat.unread ? '<span style="color: var(--danger); float: right;">●</span>' : ''}
+                `;
+                chatItem.addEventListener('click', function() {
+                    openAdminChat(chat);
+                });
+                chatsList.appendChild(chatItem);
+            });
+        }
+
+        function openAdminChat(chat) {
+            currentActiveChat = chat;
+            const chatBody = document.getElementById('chat-body');
+            chatBody.innerHTML = '';
+            
+            addMessage('Sistema', `💬 Chat com ${chat.user} - ${chat.product}`, true);
+            
+            // Carregar mensagens existentes
+            chat.messages.forEach(msg => {
+                addMessage(msg.sender, msg.text, msg.sender === 'Brainz Vendas Bot ✅');
+            });
+            
+            addMessage('Sistema', 'Digite +unlock para liberar o chat para este usuário', true);
+            
+            document.getElementById('chat-input-area').style.display = 'flex';
+            document.getElementById('chat-modal').style.display = 'flex';
+            
+            // Marcar como lido
+            chat.unread = false;
+            loadActiveChats();
+        }
+
+        function editProduct(productName) {
+            showNotification(`✏️ Editando produto: ${productName}`);
+        }
+
+        function addNewProduct() {
+            showNotification('🆕 Adicionar novo produto - Em desenvolvimento');
+        }
+
+        function updateStock() {
+            const product = document.getElementById('stock-product').value;
+            const quantity = document.getElementById('stock-quantity').value;
+            showNotification(`📦 Estoque de ${product} atualizado para: ${quantity}`);
+        }
+
+        function saveBlockedProducts() {
+            showNotification('🚫 Produtos bloqueados salvos com sucesso!');
+        }
+
+        function exitAdminPanel() {
+            document.getElementById('admin-panel').style.display = 'none';
+            showNotification('🏠 Voltando para a loja...');
+        }
+
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.innerHTML = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Inicializar chats ativos
+        loadActiveChats();
+    </script>
+</body>
+</html>
